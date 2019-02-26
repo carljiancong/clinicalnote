@@ -16,27 +16,25 @@ public class ClinicalNote {
     @ApiModelProperty(name = "报告id", example = "1")
     private Integer clinicalNoteId;
     @ApiModelProperty(name = "会诊记录id", example = "1")
-
+    @Column(name = "encounter_id")
     private Integer encounterId;
     @ApiModelProperty(name = "报告id", example = "1")
-
+    @Column(name = "note_content")
     private String noteContent;
     @ApiModelProperty(name = "报告id", example = "1")
-
+    @Column(name = "create_by")
     private String createBy;
     @ApiModelProperty(name = "报告id", example = "1")
-
+    @Column(name = "create_date")
     private Date createDate;
     @ApiModelProperty(name = "报告id", example = "1")
-
+    @Column(name = "patient_id")
     private Integer patientId;
 
     public ClinicalNote() {
     }
 
-    public ClinicalNote(Integer clinicalNoteId, Integer encounterId,
-                        String noteContent, String createBy, Date createDate) {
-        this.clinicalNoteId = clinicalNoteId;
+    public ClinicalNote(Integer encounterId, String noteContent, String createBy, Date createDate) {
         this.encounterId = encounterId;
         this.noteContent = noteContent;
         this.createBy = createBy;

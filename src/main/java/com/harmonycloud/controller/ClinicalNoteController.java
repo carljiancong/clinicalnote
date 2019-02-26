@@ -42,7 +42,7 @@ public class ClinicalNoteController {
         return clinicalNoteService.getClinicalNoteList(patientId);
     }
 
-    @PostMapping("/clinicnote")
+    @PostMapping("/clinicalNote")
     public Result saveClinicalNote(@RequestBody ClinicalNoteVo clinicalNoteVo){
         return clinicalNoteService.saveClinicalNote(clinicalNoteVo);
     }

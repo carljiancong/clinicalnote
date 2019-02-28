@@ -34,7 +34,7 @@ public class ClinicalNoteController {
 
     @GetMapping("/listClinicNote")
     @ApiOperation(value = "ClinicNote", response = ClinicalNote.class, httpMethod = "GET")
-    @ApiImplicitParam(name = "PatientId", value = "PatientId", paramType = "query", dataType = "Integer")
+    @ApiImplicitParam(name = "patientId", value = "PatientId", paramType = "query", dataType = "Integer")
     public Result getClinicalNoteList(@RequestParam("patientId") Integer patientId){
         if(patientId <=0){
             return Result.buildError(CodeMsg.PARAMETER_ERROR);

@@ -26,7 +26,7 @@ public class ClinicalNote {
     private String createBy;
     @ApiModelProperty(name = "报告id", example = "1")
     @Column(name = "create_date")
-    private Date createDate;
+    private String createDate;
     @ApiModelProperty(name = "报告id", example = "1")
     @Column(name = "patient_id")
     private Integer patientId;
@@ -34,7 +34,7 @@ public class ClinicalNote {
     public ClinicalNote() {
     }
 
-    public ClinicalNote(Integer encounterId, String noteContent, String createBy, Date createDate) {
+    public ClinicalNote(Integer encounterId, String noteContent, String createBy, String createDate) {
         this.encounterId = encounterId;
         this.noteContent = noteContent;
         this.createBy = createBy;
@@ -73,11 +73,11 @@ public class ClinicalNote {
         this.createBy = createBy;
     }
 
-    public Date getCreateDate() {
+    public String getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(String createDate) {
         this.createDate = createDate;
     }
 

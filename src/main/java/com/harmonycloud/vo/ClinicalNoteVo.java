@@ -6,10 +6,10 @@ public class ClinicalNoteVo {
     private Integer encounterId;
     private String noteContent;
     private String createBy;
-    private Date createDate;
+    private String createDate;
     private Integer patientId;
 
-    public ClinicalNoteVo(Integer encounterId, String noteContent, String createBy, Date createDate, Integer patientId) {
+    public ClinicalNoteVo(Integer encounterId, String noteContent, String createBy, String createDate, Integer patientId) {
         this.encounterId = encounterId;
         this.noteContent = noteContent;
         this.createBy = createBy;
@@ -41,11 +41,11 @@ public class ClinicalNoteVo {
         this.createBy = createBy;
     }
 
-    public Date getCreateDate() {
+    public String getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(String createDate) {
         this.createDate = createDate;
     }
 

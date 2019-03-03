@@ -6,7 +6,6 @@ import com.harmonycloud.result.CodeMsg;
 import com.harmonycloud.result.Result;
 import com.harmonycloud.service.ClinicalNoteService;
 import com.harmonycloud.service.ClinicalTemplateService;
-import com.harmonycloud.vo.ClinicalNoteVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -43,7 +42,7 @@ public class ClinicalNoteController {
     }
 
     @PostMapping("/clinicalNote")
-    public Result saveClinicalNote(@RequestBody ClinicalNoteVo clinicalNoteVo){
-        return clinicalNoteService.saveClinicalNote(clinicalNoteVo);
+    public Result saveClinicalNote(@RequestBody ClinicalNote clinicalNote){
+        return clinicalNoteService.saveClinicalNote(clinicalNote);
     }
 }

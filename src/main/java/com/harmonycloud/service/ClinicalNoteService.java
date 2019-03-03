@@ -4,7 +4,6 @@ import com.harmonycloud.entity.ClinicalNote;
 import com.harmonycloud.repository.ClinicalNoteRepository;
 import com.harmonycloud.result.CodeMsg;
 import com.harmonycloud.result.Result;
-import com.harmonycloud.vo.ClinicalNoteVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +30,9 @@ public class ClinicalNoteService {
         return Result.buildSuccess(clinicalNoteList);
     }
 
-    public Result saveClinicalNote(ClinicalNoteVo clinicalNoteVo){
+    public Result saveClinicalNote(ClinicalNote clinicalNote){
+
         try{
-            ClinicalNote clinicalNote = new ClinicalNote(clinicalNoteVo.getEncounterId(),clinicalNoteVo.getNoteContent(),
-                    clinicalNoteVo.getCreateBy(),clinicalNoteVo.getCreateDate());
             clinicalNoteRepository.save(clinicalNote);
             return Result.buildSuccess(clinicalNote);
         }catch (Exception e){

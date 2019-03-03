@@ -34,11 +34,12 @@ public class ClinicalNote {
     public ClinicalNote() {
     }
 
-    public ClinicalNote(Integer encounterId, String noteContent, String createBy, String createDate) {
+    public ClinicalNote(Integer encounterId, String noteContent, String createBy, String createDate, Integer patientId) {
         this.encounterId = encounterId;
         this.noteContent = noteContent;
         this.createBy = createBy;
         this.createDate = createDate;
+        this.patientId = patientId;
     }
 
     public Integer getClinicalNoteId() {

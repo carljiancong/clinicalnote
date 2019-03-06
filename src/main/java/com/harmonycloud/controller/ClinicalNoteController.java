@@ -6,11 +6,15 @@ import com.harmonycloud.result.CodeMsg;
 import com.harmonycloud.result.Result;
 import com.harmonycloud.service.ClinicalNoteService;
 import com.harmonycloud.service.ClinicalTemplateService;
+import com.harmonycloud.vo.ClinicalNoteVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @Api(value = "Clinical Note")
@@ -40,9 +44,12 @@ public class ClinicalNoteController {
         }
         return clinicalNoteService.getClinicalNoteList(patientId);
     }
-
-    @PostMapping("/clinicalNote")
+    @RequestMapping(path = "/saveClinicalNote", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     public Result saveClinicalNote(@RequestBody ClinicalNote clinicalNote){
         return clinicalNoteService.saveClinicalNote(clinicalNote);
+    }
+    @RequestMapping(path = "/updateClinicalNote", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
+    public Result updateClinicalNote(@RequestBody ClinicalNoteVo clinicalNoteVo){
+        return clinicalNoteService.updateClinicalNote(clinicalNoteVo);
     }
 }

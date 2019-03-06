@@ -10,4 +10,6 @@ import java.util.List;
 public interface ClinicalNoteRepository extends JpaRepository<ClinicalNote,Integer> {
 
     List<ClinicalNote> findByPatientId(Integer patientId);
+
+    ClinicalNote findByEncounterId(Integer encounterId);
 }

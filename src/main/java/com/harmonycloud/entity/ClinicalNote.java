@@ -18,28 +18,32 @@ public class ClinicalNote {
     @ApiModelProperty(name = "会诊记录id", example = "1")
     @Column(name = "encounter_id")
     private Integer encounterId;
-    @ApiModelProperty(name = "报告id", example = "1")
+    @ApiModelProperty(name = "note_content", example = "1")
     @Column(name = "note_content")
     private String noteContent;
-    @ApiModelProperty(name = "报告id", example = "1")
+    @ApiModelProperty(name = "create_by", example = "1")
     @Column(name = "create_by")
     private String createBy;
-    @ApiModelProperty(name = "报告id", example = "1")
+    @ApiModelProperty(name = "create_date", example = "1")
     @Column(name = "create_date")
-    private String createDate;
-    @ApiModelProperty(name = "报告id", example = "1")
+    private Date createDate;
+    @ApiModelProperty(name = "patient_id", example = "1")
     @Column(name = "patient_id")
     private Integer patientId;
+    @ApiModelProperty(name = "note_type",example = "Dr note")
+    @Column(name = "note_type")
+    private String noteType;
 
     public ClinicalNote() {
     }
 
-    public ClinicalNote(Integer encounterId, String noteContent, String createBy, String createDate, Integer patientId) {
+    public ClinicalNote(Integer encounterId, String noteContent, String createBy, Date createDate, Integer patientId,String noteType) {
         this.encounterId = encounterId;
         this.noteContent = noteContent;
         this.createBy = createBy;
         this.createDate = createDate;
         this.patientId = patientId;
+        this.noteType = noteType;
     }
 
     public Integer getClinicalNoteId() {
@@ -74,11 +78,11 @@ public class ClinicalNote {
         this.createBy = createBy;
     }
 
-    public String getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(String createDate) {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 
@@ -88,5 +92,13 @@ public class ClinicalNote {
 
     public void setPatientId(Integer patientId) {
         this.patientId = patientId;
+    }
+
+    public String getNoteType() {
+        return noteType;
+    }
+
+    public void setNoteType(String noteType) {
+        this.noteType = noteType;
     }
 }

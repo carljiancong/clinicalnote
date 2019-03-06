@@ -44,6 +44,7 @@ public class ClinicalNoteController {
         }
         return clinicalNoteService.getClinicalNoteList(patientId);
     }
+
     @RequestMapping(path = "/saveClinicalNote", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     public Result saveClinicalNote(@RequestBody ClinicalNote clinicalNote){
         return clinicalNoteService.saveClinicalNote(clinicalNote);

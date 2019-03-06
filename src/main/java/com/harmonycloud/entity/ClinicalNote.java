@@ -31,19 +31,19 @@ public class ClinicalNote {
     @Column(name = "patient_id")
     private Integer patientId;
     @ApiModelProperty(name = "note_type",example = "Dr note")
-    @Column(name = "note_type")
-    private String noteType;
+    @Column(name = "record_type")
+    private String recordType;
 
     public ClinicalNote() {
     }
 
-    public ClinicalNote(Integer encounterId, String noteContent, String createBy, Date createDate, Integer patientId,String noteType) {
+    public ClinicalNote(Integer encounterId, String noteContent, String createBy, Date createDate, Integer patientId,String recordType) {
         this.encounterId = encounterId;
         this.noteContent = noteContent;
         this.createBy = createBy;
         this.createDate = createDate;
         this.patientId = patientId;
-        this.noteType = noteType;
+        this.recordType = recordType;
     }
 
     public Integer getClinicalNoteId() {
@@ -94,11 +94,11 @@ public class ClinicalNote {
         this.patientId = patientId;
     }
 
-    public String getNoteType() {
-        return noteType;
+    public String getRecordType() {
+        return recordType;
     }
 
-    public void setNoteType(String noteType) {
-        this.noteType = noteType;
+    public void setRecordType(String recordType) {
+        this.recordType = recordType;
     }
 }

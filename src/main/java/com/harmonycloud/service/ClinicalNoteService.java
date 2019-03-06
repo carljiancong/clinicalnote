@@ -39,7 +39,7 @@ public class ClinicalNoteService {
         ClinicalNote clinicalNote1 = null;
         try {
             clinicalNote1 = clinicalNoteRepository.findByEncounterId(clinicalNote.getEncounterId());
-            if (clinicalNote1 != null) {
+            if (clinicalNote1 == null) {
                 clinicalNoteRepository.save(clinicalNote);
             } else {
                 throw new Exception("The clinical note has been updated by another user");

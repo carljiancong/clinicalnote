@@ -53,7 +53,7 @@ public class ClinicalNoteController {
     }
 
 
-    @GetMapping("/listClinicNote")
+    @GetMapping("/listClinicNoteEntity")
     @ApiOperation(value = "ClinicNote in this encounter ", response = ClinicalNote.class, httpMethod = "GET")
     @ApiImplicitParam(name = "encounterId", value = "encounterId", paramType = "query", dataType = "Integer")
     public Result getClinicalNote(@RequestParam("encounterId") Integer encounterId){

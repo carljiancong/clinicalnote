@@ -14,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @Api(value = "Clinical Note")
 public class ClinicalNoteController {
@@ -52,5 +50,16 @@ public class ClinicalNoteController {
     @RequestMapping(path = "/updateClinicalNote", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     public Result updateClinicalNote(@RequestBody ClinicalNoteVo clinicalNoteVo){
         return clinicalNoteService.updateClinicalNote(clinicalNoteVo);
+    }
+
+
+    @GetMapping("/listClinicNote")
+    @ApiOperation(value = "ClinicNote in this encounter ", response = ClinicalNote.class, httpMethod = "GET")
+    @ApiImplicitParam(name = "encounterId", value = "encounterId", paramType = "query", dataType = "Integer")
+    public Result getClinicalNote(@RequestParam("encounterId") Integer encounterId){
+        if(encounterId <=0){
+            return Result.buildError(CodeMsg.PARAMETER_ERROR);
+        }
+        return clinicalNoteService.getClinicalNote(encounterId);
     }
 }

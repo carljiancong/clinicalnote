@@ -33,6 +33,18 @@ public class ClinicalNoteService {
         return Result.buildSuccess(clinicalNoteList);
     }
 
+
+    public Result getClinicalNote(Integer encounterId) {
+        ClinicalNote clinicalNote = null;
+        try {
+            clinicalNote = clinicalNoteRepository.findByEncounterId(encounterId);
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+            return Result.buildError(CodeMsg.SERVICE_ERROR);
+        }
+        return Result.buildSuccess(clinicalNote);
+    }
+
     @Transactional(rollbackFor = Exception.class)
     @Compensable(compensationMethod = "saveClinicalNoteCancel", timeout = 10)
     public Result saveClinicalNote(ClinicalNote clinicalNote) {

@@ -66,8 +66,8 @@ public class ClinicalNoteService {
     public Result updateClinicalNote(ClinicalNoteVo clinicalNoteVo) {
         ClinicalNote clinicalNote1 = null;
         try {
-            clinicalNote1 = clinicalNoteRepository.findByEncounterId(clinicalNoteVo.getOldClinicalNote().getEncounterId());
-            if (clinicalNote1.getNoteContent().equals(clinicalNoteVo.getOldClinicalNote().getNoteContent())) {
+            clinicalNote1 = clinicalNoteRepository.findByClinicalNoteId(clinicalNoteVo.getOldClinicalNote().getClinicalNoteId());
+            if (clinicalNote1.getNoteContent().equals(clinicalNoteVo.getOldClinicalNote().getNoteContent()) && clinicalNote1.getCreateBy().equals(clinicalNoteVo.getOldClinicalNote().getCreateBy())) {
                 clinicalNoteRepository.save(clinicalNoteVo.getNewClinicalNote());
             } else {
                 throw new Exception("The clinical note has been updated by another user");
@@ -83,7 +83,7 @@ public class ClinicalNoteService {
         ClinicalNote clinicalNote1 = null;
         ClinicalNote clinicalNote = null;
         try {
-            clinicalNote1 = clinicalNoteRepository.findByEncounterId(clinicalNoteVo.getOldClinicalNote().getEncounterId());
+            clinicalNote1 = clinicalNoteRepository.findByClinicalNoteId(clinicalNoteVo.getOldClinicalNote().getClinicalNoteId());
             clinicalNote = clinicalNoteVo.getOldClinicalNote();
             clinicalNote.setClinicalNoteId(clinicalNote1.getClinicalNoteId());
             clinicalNoteRepository.save(clinicalNote);

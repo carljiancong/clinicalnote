@@ -12,4 +12,6 @@ public interface ClinicalNoteRepository extends JpaRepository<ClinicalNote,Integ
     List<ClinicalNote> findByPatientId(Integer patientId);
 
     ClinicalNote findByEncounterId(Integer encounterId);
+
+    ClinicalNote findByClinicalNoteId(Integer clinicalNoteId);
 }

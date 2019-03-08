@@ -72,16 +72,16 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.apache.servicecomb.saga</groupId>
-            <artifactId>omega-spring-starter</artifactId>
-            <version>0.2.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.servicecomb.saga</groupId>
-            <artifactId>omega-transport-resttemplate</artifactId>
-            <version>0.2.1</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.apache.servicecomb.saga</groupId>-->
+            <!--<artifactId>omega-spring-starter</artifactId>-->
+            <!--<version>0.2.1</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.apache.servicecomb.saga</groupId>-->
+            <!--<artifactId>omega-transport-resttemplate</artifactId>-->
+            <!--<version>0.2.1</version>-->
+        <!--</dependency>-->
         <!-- swagger -->
         <dependency>
             <groupId>io.springfox</groupId>

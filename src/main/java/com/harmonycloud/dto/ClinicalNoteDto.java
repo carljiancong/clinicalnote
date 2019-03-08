@@ -1,17 +1,17 @@
-package com.harmonycloud.vo;
+package com.harmonycloud.dto;
 
 import com.harmonycloud.entity.ClinicalNote;
 
-public class ClinicalNoteVo {
+public class ClinicalNoteDto {
     private ClinicalNote oldClinicalNote;
     private ClinicalNote newClinicalNote;
 
-    public ClinicalNoteVo(ClinicalNote oldClinicalNote, ClinicalNote newClinicalNote) {
+    public ClinicalNoteDto(ClinicalNote oldClinicalNote, ClinicalNote newClinicalNote) {
         this.oldClinicalNote = oldClinicalNote;
         this.newClinicalNote = newClinicalNote;
     }
 
-    public ClinicalNoteVo() {
+    public ClinicalNoteDto() {
     }
 
     public ClinicalNote getOldClinicalNote() {

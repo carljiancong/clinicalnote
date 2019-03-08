@@ -17,7 +17,7 @@ public class CodeMsg {
 
     public static CodeMsg SERVICE_ERROR = new CodeMsg("Service error");
     public static CodeMsg PARAMETER_ERROR = new CodeMsg("Parameter error");
-
+    public static CodeMsg OTHER_PERSON = new CodeMsg("The clinical note has been updated by another user");
 
 
     public String getMsg() {

@@ -4,8 +4,8 @@ import com.harmonycloud.entity.ClinicalNote;
 import com.harmonycloud.repository.ClinicalNoteRepository;
 import com.harmonycloud.result.CodeMsg;
 import com.harmonycloud.result.Result;
-import com.harmonycloud.vo.ClinicalNoteVo;
-import org.apache.servicecomb.saga.omega.transaction.annotations.Compensable;
+import com.harmonycloud.dto.ClinicalNoteDto;
+//import org.apache.servicecomb.saga.omega.transaction.annotations.Compensable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,62 +45,31 @@ public class ClinicalNoteService {
         return Result.buildSuccess(clinicalNote);
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    @Compensable(compensationMethod = "saveClinicalNoteCancel", timeout = 10)
-    public Result saveClinicalNote(ClinicalNote clinicalNote) {
+    public Result saveClinicalNote(ClinicalNote clinicalNote) throws Exception {
         ClinicalNote clinicalNote1 = null;
-        try {
-            clinicalNote1 = clinicalNoteRepository.findByEncounterId(clinicalNote.getEncounterId());
-            if (clinicalNote1 == null) {
-                clinicalNoteRepository.save(clinicalNote);
-            } else {
-                throw new Exception("The clinical note has been updated by another user");
-            }
-            return Result.buildSuccess(clinicalNote);
-        } catch (Exception e) {
-            logger.info(e.getMessage());
-            return Result.buildError(CodeMsg.SERVICE_ERROR);
-        }
-    }
 
-    public void saveClinicalNoteCancel(ClinicalNote clinicalNote) {
-        ClinicalNote clinicalNote1 = null;
-        try {
-            clinicalNote1 = clinicalNoteRepository.findByEncounterId(clinicalNote.getEncounterId());
-            clinicalNoteRepository.delete(clinicalNote1);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    @Compensable(compensationMethod = "updateClinicalNoteCancel", timeout = 10)
-    public Result updateClinicalNote(ClinicalNoteVo clinicalNoteVo) {
-        ClinicalNote clinicalNote1 = null;
-        try {
-            clinicalNote1 = clinicalNoteRepository.findByClinicalNoteId(clinicalNoteVo.getOldClinicalNote().getClinicalNoteId());
-            if (clinicalNote1.getNoteContent().equals(clinicalNoteVo.getOldClinicalNote().getNoteContent()) && clinicalNote1.getCreateBy().equals(clinicalNoteVo.getOldClinicalNote().getCreateBy())) {
-                clinicalNoteRepository.save(clinicalNoteVo.getNewClinicalNote());
-            } else {
-                throw new Exception("The clinical note has been updated by another user");
-            }
-            return Result.buildSuccess(clinicalNoteVo.getNewClinicalNote());
-        } catch (Exception e) {
-            logger.info(e.getMessage());
-            return Result.buildError(CodeMsg.SERVICE_ERROR);
-        }
-    }
-
-    public void updateClinicalNoteCancel(ClinicalNoteVo clinicalNoteVo) {
-        ClinicalNote clinicalNote1 = null;
-        ClinicalNote clinicalNote = null;
-        try {
-            clinicalNote1 = clinicalNoteRepository.findByClinicalNoteId(clinicalNoteVo.getOldClinicalNote().getClinicalNoteId());
-            clinicalNote = clinicalNoteVo.getOldClinicalNote();
-            clinicalNote.setClinicalNoteId(clinicalNote1.getClinicalNoteId());
+        clinicalNote1 = clinicalNoteRepository.findByEncounterId(clinicalNote.getEncounterId());
+        if (clinicalNote1 == null) {
             clinicalNoteRepository.save(clinicalNote);
+        } else {
+            throw new Exception("The clinical note has been updated by another user");
+        }
+
+        return Result.buildSuccess(clinicalNote);
+    }
+
+
+    public Result updateClinicalNote(ClinicalNoteDto clinicalNoteDto) throws Exception {
+        ClinicalNote clinicalNote1 = null;
+        try {
+            clinicalNoteRepository.update(clinicalNoteDto.getNewClinicalNote().getNoteContent(), clinicalNoteDto.getNewClinicalNote().getCreateBy(),
+                    clinicalNoteDto.getNewClinicalNote().getCreateDate(), clinicalNoteDto.getOldClinicalNote().getNoteContent(), clinicalNoteDto.getOldClinicalNote().getCreateBy());
+
+            return Result.buildSuccess(clinicalNoteDto.getNewClinicalNote());
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(e.getMessage());
+            throw new Exception("The clinical note has been updated by another user");
         }
     }
+
 }

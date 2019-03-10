@@ -7,12 +7,11 @@ import com.harmonycloud.result.CodeMsg;
 import com.harmonycloud.result.Result;
 import com.harmonycloud.service.ClinicalNoteService;
 import com.harmonycloud.service.ClinicalTemplateService;
-import com.harmonycloud.dto.ClinicalNoteDto;
+import com.harmonycloud.bo.ClinicalNoteBo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-//import org.apache.servicecomb.saga.omega.transaction.annotations.Compensable;
-import org.aspectj.apache.bcel.classfile.Code;
+import org.apache.servicecomb.saga.omega.transaction.annotations.Compensable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,40 +60,38 @@ public class ClinicalNoteController {
     }
 
     @RequestMapping(path = "/saveClinicalNote", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-//    @Compensable(compensationMethod = "saveClinicalNoteCancel", timeout = 10)
+    @Compensable(compensationMethod = "saveClinicalNoteCancel", timeout = 10)
     @Transactional(rollbackFor = Exception.class)
-    public Result saveClinicalNote(@RequestBody ClinicalNote clinicalNote) {
-        Result result = null;
+    public Result saveClinicalNote(@RequestBody ClinicalNote clinicalNote) throws Exception {
         try {
-            result = clinicalNoteService.saveClinicalNote(clinicalNote);
+            return clinicalNoteService.saveClinicalNote(clinicalNote);
         } catch (Exception e) {
-            return Result.buildError(CodeMsg.OTHER_PERSON);
+            throw e;
         }
-        return result;
     }
 
     public void saveClinicalNoteCancel(ClinicalNote clinicalNote) {
-        ClinicalNote clinicalNote1 = null;
         try {
-            clinicalNote1 = clinicalNoteRepository.findByEncounterId(clinicalNote.getEncounterId());
-            clinicalNoteRepository.delete(clinicalNote1);
+            clinicalNoteService.saveClinicalNoteCancel(clinicalNote);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @RequestMapping(path = "/updateClinicalNote", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-//    @Compensable(compensationMethod = "updateClinicalNoteCancel", timeout = 10)
+    @Compensable(compensationMethod = "updateClinicalNoteCancel", timeout = 10)
     @Transactional(rollbackFor = Exception.class)
-    public Result updateClinicalNote(@RequestBody ClinicalNoteDto clinicalNoteDto) throws Exception {
-        return clinicalNoteService.updateClinicalNote(clinicalNoteDto);
+    public Result updateClinicalNote(@RequestBody ClinicalNoteBo clinicalNoteBo) throws Exception {
+        try {
+            return clinicalNoteService.updateClinicalNote(clinicalNoteBo);
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
-
-    public void updateClinicalNoteCancel(ClinicalNoteDto clinicalNoteDto) {
+    public void updateClinicalNoteCancel(ClinicalNoteBo clinicalNoteDto) {
         try {
-            ClinicalNote clinicalNote = clinicalNoteDto.getOldClinicalNote();
-            clinicalNoteRepository.save(clinicalNote);
+            clinicalNoteService.updateClinicalNoteCancel(clinicalNoteDto);
         } catch (Exception e) {
             e.printStackTrace();
         }

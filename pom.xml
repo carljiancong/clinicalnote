@@ -121,7 +121,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
-        <finalName>clinicalnote</finalName>
+        <finalName>ROOT</finalName>
     </build>
 
 </project>

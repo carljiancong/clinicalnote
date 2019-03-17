@@ -1,5 +1,6 @@
 package com.harmonycloud.service;
 
+import com.harmonycloud.bo.UserPrincipal;
 import com.harmonycloud.entity.ClinicalNote;
 import com.harmonycloud.repository.ClinicalNoteRepository;
 import com.harmonycloud.result.CodeMsg;
@@ -9,8 +10,10 @@ import com.harmonycloud.bo.ClinicalNoteBo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -45,10 +48,11 @@ public class ClinicalNoteService {
     }
 
     public Result saveClinicalNote(ClinicalNote clinicalNote) throws Exception {
-        ClinicalNote clinicalNote1 = null;
         try {
-
-            clinicalNote1 = clinicalNoteRepository.findByEncounterId(clinicalNote.getEncounterId());
+            UserPrincipal userDetails = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()
+                    .getPrincipal();
+            clinicalNote.setCreateBy(userDetails.getUsername());
+            clinicalNote.setCreateDate(new Date());
             clinicalNoteRepository.save(clinicalNote);
         } catch (Exception e) {
             return Result.buildError(CodeMsg.SERVICE_ERROR);
@@ -57,10 +61,10 @@ public class ClinicalNoteService {
     }
 
     public void saveClinicalNoteCancel(ClinicalNote clinicalNote) {
-        ClinicalNote clinicalNote1 = null;
+        ClinicalNote oldClinicalNote = null;
         try {
-            clinicalNote1 = clinicalNoteRepository.findByEncounterId(clinicalNote.getEncounterId());
-            clinicalNoteRepository.delete(clinicalNote1);
+            oldClinicalNote = clinicalNoteRepository.findByEncounterId(clinicalNote.getEncounterId());
+            clinicalNoteRepository.delete(oldClinicalNote);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -75,7 +79,6 @@ public class ClinicalNoteService {
         } catch (Exception e) {
             return Result.buildError(CodeMsg.SERVICE_ERROR);
         }
-
         return Result.buildSuccess(null);
     }
 

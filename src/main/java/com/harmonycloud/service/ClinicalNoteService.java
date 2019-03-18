@@ -71,8 +71,11 @@ public class ClinicalNoteService {
     }
 
     public Result updateClinicalNote(ClinicalNoteBo clinicalNoteBo) throws Exception {
-
+        UserPrincipal userDetails = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
         ClinicalNote clinicalNote = clinicalNoteBo.getNewClinicalNote();
+        clinicalNote.setCreateBy(userDetails.getUsername());
+        clinicalNote.setCreateDate(new Date());
         try {
             clinicalNote.setClinicalNoteId(clinicalNoteBo.getOldClinicalNote().getClinicalNoteId());
             clinicalNoteRepository.save(clinicalNote);

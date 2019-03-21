@@ -30,14 +30,14 @@ public class ClinicalNote {
     @ApiModelProperty(name = "patient_id", example = "1")
     @Column(name = "patient_id")
     private Integer patientId;
-    @ApiModelProperty(name = "note_type",example = "Dr note")
+    @ApiModelProperty(name = "note_type", example = "Dr note")
     @Column(name = "record_type")
     private String recordType;
 
     public ClinicalNote() {
     }
 
-    public ClinicalNote(Integer encounterId, String noteContent, String createBy, Date createDate, Integer patientId,String recordType) {
+    public ClinicalNote(Integer encounterId, String noteContent, String createBy, Date createDate, Integer patientId, String recordType) {
         this.encounterId = encounterId;
         this.noteContent = noteContent;
         this.createBy = createBy;

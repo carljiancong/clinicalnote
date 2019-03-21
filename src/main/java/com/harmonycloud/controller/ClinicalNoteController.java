@@ -2,24 +2,30 @@ package com.harmonycloud.controller;
 
 import com.harmonycloud.entity.ClinicalNote;
 import com.harmonycloud.entity.ClinicalNoteTemplate;
+import com.harmonycloud.enums.ErrorMsgEnum;
 import com.harmonycloud.repository.ClinicalNoteRepository;
-import com.harmonycloud.result.CodeMsg;
-import com.harmonycloud.result.Result;
+import com.harmonycloud.result.CimsResponseWrapper;
 import com.harmonycloud.service.ClinicalNoteService;
 import com.harmonycloud.service.ClinicalTemplateService;
-import com.harmonycloud.bo.ClinicalNoteBo;
+import com.harmonycloud.dto.ClinicalNoteDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.apache.servicecomb.saga.omega.transaction.annotations.Compensable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @Api(value = "Clinical Note")
 public class ClinicalNoteController {
+
+    private static final Logger logger = LoggerFactory.getLogger(ClinicalNoteController.class);
     @Autowired
     private ClinicalTemplateService clinicalTemplateService;
 
@@ -29,71 +35,107 @@ public class ClinicalNoteController {
     @Autowired
     private ClinicalNoteRepository clinicalNoteRepository;
 
+    /**
+     * list clinicalnote template
+     *
+     * @param clinicId
+     * @return
+     * @throws Exception
+     */
     @GetMapping("/listTemplate")
     @ApiOperation(value = "list clinicalnote template", response = ClinicalNoteTemplate.class, httpMethod = "GET")
     @ApiImplicitParam(name = "clinicId", value = "clinicId", paramType = "query", dataType = "Integer")
-    public Result getClinicalTemplateList(@RequestParam("clinicId") Integer clinicId) {
-        if (clinicId <= 0) {
-            return Result.buildError(CodeMsg.PARAMETER_ERROR);
+    public CimsResponseWrapper<List> getClinicalTemplateList(@RequestParam("clinicId") Integer clinicId) throws Exception {
+        if (clinicId == null || clinicId <= 0) {
+            return new CimsResponseWrapper<>(false, ErrorMsgEnum.PARAMETER_ERROR.getMessage(), null);
         }
-        return clinicalTemplateService.getClinicalTemplate(clinicId);
+        List<ClinicalNoteTemplate> clinicalNoteTemplateList = clinicalTemplateService.getClinicalTemplate(clinicId);
+        return new CimsResponseWrapper<>(true, null, clinicalNoteTemplateList);
     }
 
+    /**
+     * list this patient clinicalNote
+     *
+     * @param patientId
+     * @return
+     * @throws Exception
+     */
     @GetMapping("/listClinicNote")
     @ApiOperation(value = "list this patient clinicalNote", response = ClinicalNote.class, httpMethod = "GET")
     @ApiImplicitParam(name = "patientId", value = "PatientId", paramType = "query", dataType = "Integer")
-    public Result getClinicalNoteList(@RequestParam("patientId") Integer patientId) {
-        if (patientId <= 0) {
-            return Result.buildError(CodeMsg.PARAMETER_ERROR);
+    public CimsResponseWrapper<List> getClinicalNoteList(@RequestParam("patientId") Integer patientId) throws Exception {
+        if (patientId == null || patientId <= 0) {
+            return new CimsResponseWrapper<>(false, ErrorMsgEnum.PARAMETER_ERROR.getMessage(), null);
         }
-        return clinicalNoteService.getClinicalNoteList(patientId);
+        List<ClinicalNote> clinicalNoteList = clinicalNoteService.getClinicalNoteList(patientId);
+        return new CimsResponseWrapper<>(true, null, clinicalNoteList);
     }
 
+
+    /**
+     * get ClinicNote by encounterId
+     *
+     * @param encounterId
+     * @return
+     * @throws Exception
+     */
     @GetMapping("/getClinicalNote")
     @ApiOperation(value = "get ClinicNote by encounterId ", response = ClinicalNote.class, httpMethod = "GET")
     @ApiImplicitParam(name = "encounterId", value = "encounterId", paramType = "query", dataType = "Integer")
-    public Result getClinicalNote(@RequestParam("encounterId") Integer encounterId) {
-        if (encounterId <= 0) {
-            return Result.buildError(CodeMsg.PARAMETER_ERROR);
+    public CimsResponseWrapper<ClinicalNote> getClinicalNote(@RequestParam("encounterId") Integer encounterId) throws Exception {
+        if (encounterId == null || encounterId <= 0) {
+            return new CimsResponseWrapper<>(false, ErrorMsgEnum.PARAMETER_ERROR.getMessage(), null);
         }
-        return clinicalNoteService.getClinicalNote(encounterId);
+
+        ClinicalNote clinicalNote = clinicalNoteService.getClinicalNote(encounterId);
+        return new CimsResponseWrapper<>(true, null, clinicalNote);
     }
 
+    /**
+     * save clinicalNote
+     *
+     * @param clinicalNote
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(path = "/saveClinicalNote", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     @Compensable(compensationMethod = "saveClinicalNoteCancel", timeout = 10)
     @Transactional(rollbackFor = Exception.class)
-    public Result saveClinicalNote(@RequestBody ClinicalNote clinicalNote) throws Exception {
-        try {
-            return clinicalNoteService.saveClinicalNote(clinicalNote);
-        } catch (Exception e) {
-            throw e;
-        }
+    public CimsResponseWrapper<ClinicalNote> saveClinicalNote(@RequestBody ClinicalNote clinicalNote) throws Exception {
+        clinicalNoteService.saveClinicalNote(clinicalNote);
+        return new CimsResponseWrapper<>(true, null, null);
     }
 
+    /**
+     * save clinicalNote cancel
+     *
+     * @param clinicalNote
+     */
     public void saveClinicalNoteCancel(ClinicalNote clinicalNote) {
-        try {
-            clinicalNoteService.saveClinicalNoteCancel(clinicalNote);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        clinicalNoteService.saveClinicalNoteCancel(clinicalNote);
     }
 
+    /**
+     * updateClinicalNote
+     *
+     * @param clinicalNoteDto
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(path = "/updateClinicalNote", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     @Compensable(compensationMethod = "updateClinicalNoteCancel", timeout = 10)
     @Transactional(rollbackFor = Exception.class)
-    public Result updateClinicalNote(@RequestBody ClinicalNoteBo clinicalNoteBo) throws Exception {
-        try {
-            return clinicalNoteService.updateClinicalNote(clinicalNoteBo);
-        } catch (Exception e) {
-            throw e;
-        }
+    public CimsResponseWrapper<List> updateClinicalNote(@RequestBody ClinicalNoteDto clinicalNoteDto) throws Exception {
+        clinicalNoteService.updateClinicalNote(clinicalNoteDto);
+        return new CimsResponseWrapper<>(true,null, null);
     }
 
-    public void updateClinicalNoteCancel(ClinicalNoteBo clinicalNoteDto) {
-        try {
-            clinicalNoteService.updateClinicalNoteCancel(clinicalNoteDto);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    /**
+     * update clinicalnotre cancel
+     *
+     * @param clinicalNoteDto
+     */
+    public void updateClinicalNoteCancel(ClinicalNoteDto clinicalNoteDto) {
+        clinicalNoteService.updateClinicalNoteCancel(clinicalNoteDto);
     }
 }

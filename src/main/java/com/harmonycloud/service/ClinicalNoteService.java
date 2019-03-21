@@ -2,11 +2,10 @@ package com.harmonycloud.service;
 
 import com.harmonycloud.bo.UserPrincipal;
 import com.harmonycloud.entity.ClinicalNote;
+import com.harmonycloud.enums.ErrorMsgEnum;
+import com.harmonycloud.exception.ClinicalnoteException;
 import com.harmonycloud.repository.ClinicalNoteRepository;
-import com.harmonycloud.result.CodeMsg;
-import com.harmonycloud.result.Result;
-import com.harmonycloud.bo.ClinicalNoteBo;
-//import org.apache.servicecomb.saga.omega.transaction.annotations.Compensable;
+import com.harmonycloud.dto.ClinicalNoteDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,30 +23,40 @@ public class ClinicalNoteService {
     @Autowired
     private ClinicalNoteRepository clinicalNoteRepository;
 
-    public Result getClinicalNoteList(Integer patientId) {
-        List<ClinicalNote> clinicalNoteList = null;
-        try {
-            clinicalNoteList = clinicalNoteRepository.findByPatientId(patientId);
-        } catch (Exception e) {
-            logger.info(e.getMessage());
-            return Result.buildError(CodeMsg.SERVICE_ERROR);
-        }
-        return Result.buildSuccess(clinicalNoteList);
+    /**
+     * get clinical note list
+     *
+     * @param patientId
+     * @return
+     * @throws ClinicalnoteException
+     */
+    public List<ClinicalNote> getClinicalNoteList(Integer patientId) throws ClinicalnoteException {
+        List<ClinicalNote> clinicalNoteList = clinicalNoteRepository.findByPatientId(patientId);
+
+        return clinicalNoteList;
     }
 
 
-    public Result getClinicalNote(Integer encounterId) {
-        ClinicalNote clinicalNote = null;
-        try {
-            clinicalNote = clinicalNoteRepository.findByEncounterId(encounterId);
-        } catch (Exception e) {
-            logger.info(e.getMessage());
-            return Result.buildError(CodeMsg.SERVICE_ERROR);
-        }
-        return Result.buildSuccess(clinicalNote);
+    /**
+     * get clinical note
+     *
+     * @param encounterId
+     * @return
+     * @throws ClinicalnoteException
+     */
+    public ClinicalNote getClinicalNote(Integer encounterId) throws ClinicalnoteException {
+        ClinicalNote clinicalNote = clinicalNoteRepository.findByEncounterId(encounterId);
+        return clinicalNote;
     }
 
-    public Result saveClinicalNote(ClinicalNote clinicalNote) throws Exception {
+    /**
+     * save clinical note
+     *
+     * @param clinicalNote
+     * @return
+     * @throws ClinicalnoteException
+     */
+    public boolean saveClinicalNote(ClinicalNote clinicalNote) throws ClinicalnoteException {
         try {
             UserPrincipal userDetails = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()
                     .getPrincipal();
@@ -55,42 +64,59 @@ public class ClinicalNoteService {
             clinicalNote.setCreateDate(new Date());
             clinicalNoteRepository.save(clinicalNote);
         } catch (Exception e) {
-            return Result.buildError(CodeMsg.SERVICE_ERROR);
+            throw new ClinicalnoteException(ErrorMsgEnum.SAVE_ERROR.getMessage());
         }
-        return Result.buildSuccess(clinicalNote);
+        return true;
     }
 
-    public void saveClinicalNoteCancel(ClinicalNote clinicalNote) {
+    /**
+     * save clinical note cancel
+     *
+     * @param clinicalNote
+     * @throws ClinicalnoteException
+     */
+    public void saveClinicalNoteCancel(ClinicalNote clinicalNote) throws ClinicalnoteException {
         ClinicalNote oldClinicalNote = null;
         try {
             oldClinicalNote = clinicalNoteRepository.findByEncounterId(clinicalNote.getEncounterId());
             clinicalNoteRepository.delete(oldClinicalNote);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new ClinicalnoteException(ErrorMsgEnum.SAVE_ERROR.getMessage());
         }
     }
 
-    public Result updateClinicalNote(ClinicalNoteBo clinicalNoteBo) throws Exception {
+    /**
+     * update clinical note
+     *
+     * @param clinicalNoteDto
+     * @return
+     * @throws Exception
+     */
+    public boolean updateClinicalNote(ClinicalNoteDto clinicalNoteDto) throws Exception {
         UserPrincipal userDetails = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
-        ClinicalNote clinicalNote = clinicalNoteBo.getNewClinicalNote();
+        ClinicalNote clinicalNote = clinicalNoteDto.getNewClinicalNote();
         clinicalNote.setCreateBy(userDetails.getUsername());
         clinicalNote.setCreateDate(new Date());
-        try {
-            clinicalNote.setClinicalNoteId(clinicalNoteBo.getOldClinicalNote().getClinicalNoteId());
-            clinicalNoteRepository.save(clinicalNote);
-        } catch (Exception e) {
-            return Result.buildError(CodeMsg.SERVICE_ERROR);
-        }
-        return Result.buildSuccess(null);
+
+        clinicalNote.setClinicalNoteId(clinicalNoteDto.getOldClinicalNote().getClinicalNoteId());
+        clinicalNoteRepository.save(clinicalNote);
+
+        return true;
     }
 
-    public void updateClinicalNoteCancel(ClinicalNoteBo clinicalNoteDto) {
+    /**
+     * update clinical note cancel
+     *
+     * @param clinicalNoteDto
+     * @throws ClinicalnoteException
+     */
+    public void updateClinicalNoteCancel(ClinicalNoteDto clinicalNoteDto) throws ClinicalnoteException {
         try {
             ClinicalNote clinicalNote = clinicalNoteDto.getOldClinicalNote();
             clinicalNoteRepository.save(clinicalNote);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new ClinicalnoteException(ErrorMsgEnum.UPDATE_ERROR.getMessage());
         }
     }
 

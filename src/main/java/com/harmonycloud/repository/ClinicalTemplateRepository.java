@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ClinicalTemplateRepository extends JpaRepository<ClinicalNoteTemplate,Integer> {
+public interface ClinicalTemplateRepository extends JpaRepository<ClinicalNoteTemplate, Integer> {
     List<ClinicalNoteTemplate> findByClinicId(Integer clinicId);
 }

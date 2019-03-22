@@ -3,7 +3,6 @@ package com.harmonycloud.controller;
 import com.harmonycloud.entity.ClinicalNote;
 import com.harmonycloud.entity.ClinicalNoteTemplate;
 import com.harmonycloud.enums.ErrorMsgEnum;
-import com.harmonycloud.repository.ClinicalNoteRepository;
 import com.harmonycloud.result.CimsResponseWrapper;
 import com.harmonycloud.service.ClinicalNoteService;
 import com.harmonycloud.service.ClinicalTemplateService;
@@ -32,8 +31,6 @@ public class ClinicalNoteController {
     @Autowired
     private ClinicalNoteService clinicalNoteService;
 
-    @Autowired
-    private ClinicalNoteRepository clinicalNoteRepository;
 
     /**
      * list clinicalnote template

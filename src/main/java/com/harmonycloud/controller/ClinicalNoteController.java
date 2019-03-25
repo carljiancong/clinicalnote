@@ -108,7 +108,7 @@ public class ClinicalNoteController {
      *
      * @param clinicalNote
      */
-    public void saveClinicalNoteCancel(ClinicalNote clinicalNote) {
+    public void saveClinicalNoteCancel(ClinicalNote clinicalNote) throws Exception{
         clinicalNoteService.saveClinicalNoteCancel(clinicalNote);
     }
 
@@ -132,7 +132,7 @@ public class ClinicalNoteController {
      *
      * @param clinicalNoteDto
      */
-    public void updateClinicalNoteCancel(ClinicalNoteDto clinicalNoteDto) {
+    public void updateClinicalNoteCancel(ClinicalNoteDto clinicalNoteDto) throws Exception{
         clinicalNoteService.updateClinicalNoteCancel(clinicalNoteDto);
     }
 }

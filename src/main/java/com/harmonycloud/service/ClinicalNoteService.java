@@ -54,18 +54,16 @@ public class ClinicalNoteService {
      *
      * @param clinicalNote
      * @return
-     * @throws ClinicalnoteException
+     * @throws Exception
      */
-    public boolean saveClinicalNote(ClinicalNote clinicalNote) throws ClinicalnoteException {
-        try {
-            UserPrincipal userDetails = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()
-                    .getPrincipal();
-            clinicalNote.setCreateBy(userDetails.getUsername());
-            clinicalNote.setCreateDate(new Date());
-            clinicalNoteRepository.save(clinicalNote);
-        } catch (Exception e) {
-            throw new ClinicalnoteException(ErrorMsgEnum.SAVE_ERROR.getMessage());
-        }
+    public boolean saveClinicalNote(ClinicalNote clinicalNote) throws Exception {
+
+        UserPrincipal userDetails = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        clinicalNote.setCreateBy(userDetails.getUsername());
+        clinicalNote.setCreateDate(new Date());
+        clinicalNoteRepository.save(clinicalNote);
+
         return true;
     }
 
@@ -73,16 +71,14 @@ public class ClinicalNoteService {
      * save clinical note cancel
      *
      * @param clinicalNote
-     * @throws ClinicalnoteException
+     * @throws Exception
      */
-    public void saveClinicalNoteCancel(ClinicalNote clinicalNote) throws ClinicalnoteException {
+    public void saveClinicalNoteCancel(ClinicalNote clinicalNote) throws Exception {
         ClinicalNote oldClinicalNote = null;
-        try {
-            oldClinicalNote = clinicalNoteRepository.findByEncounterId(clinicalNote.getEncounterId());
-            clinicalNoteRepository.delete(oldClinicalNote);
-        } catch (Exception e) {
-            throw new ClinicalnoteException(ErrorMsgEnum.SAVE_ERROR.getMessage());
-        }
+
+        oldClinicalNote = clinicalNoteRepository.findByEncounterId(clinicalNote.getEncounterId());
+        clinicalNoteRepository.delete(oldClinicalNote);
+
     }
 
     /**
@@ -109,15 +105,13 @@ public class ClinicalNoteService {
      * update clinical note cancel
      *
      * @param clinicalNoteDto
-     * @throws ClinicalnoteException
+     * @throws Exception
      */
-    public void updateClinicalNoteCancel(ClinicalNoteDto clinicalNoteDto) throws ClinicalnoteException {
-        try {
-            ClinicalNote clinicalNote = clinicalNoteDto.getOldClinicalNote();
-            clinicalNoteRepository.save(clinicalNote);
-        } catch (Exception e) {
-            throw new ClinicalnoteException(ErrorMsgEnum.UPDATE_ERROR.getMessage());
-        }
+    public void updateClinicalNoteCancel(ClinicalNoteDto clinicalNoteDto) throws Exception {
+
+        ClinicalNote clinicalNote = clinicalNoteDto.getOldClinicalNote();
+        clinicalNoteRepository.save(clinicalNote);
+
     }
 
 }

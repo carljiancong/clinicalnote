@@ -51,6 +51,8 @@ spec:
         - mountPath: /opt/webserver/lib/logback.xml
           name: logs-config
           subPath: logback.xml
+        - mountPath: /app-logs
+          name: logs-dir
       volumes:
       - configMap:
           items:
@@ -64,3 +66,5 @@ spec:
             path: logback.xml
           name: clinicalnote-logs
         name: logs-config
+      - name: logs-dir
+        emptyDir: {}

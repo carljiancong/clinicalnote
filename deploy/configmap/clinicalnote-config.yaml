@@ -19,4 +19,5 @@ data:
 
     alpha.cluster.address=saga-server:8080
 
+    logging.path=/app-logs
     logging.config=classpath:logback.xml

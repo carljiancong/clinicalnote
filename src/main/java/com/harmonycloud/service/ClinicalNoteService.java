@@ -6,8 +6,6 @@ import com.harmonycloud.enums.ErrorMsgEnum;
 import com.harmonycloud.exception.ClinicalnoteException;
 import com.harmonycloud.repository.ClinicalNoteRepository;
 import com.harmonycloud.dto.ClinicalNoteDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -17,7 +15,6 @@ import java.util.List;
 
 @Service
 public class ClinicalNoteService {
-    private Logger logger = LoggerFactory.getLogger(ClinicalTemplateService.class);
 
 
     @Autowired
@@ -26,7 +23,7 @@ public class ClinicalNoteService {
     /**
      * get clinical note list
      *
-     * @param patientId
+     * @param patientId patientId
      * @return
      * @throws ClinicalnoteException
      */
@@ -40,7 +37,7 @@ public class ClinicalNoteService {
     /**
      * get clinical note
      *
-     * @param encounterId
+     * @param encounterId encounterId
      * @return
      * @throws ClinicalnoteException
      */
@@ -52,7 +49,7 @@ public class ClinicalNoteService {
     /**
      * save clinical note
      *
-     * @param clinicalNote
+     * @param clinicalNote model
      * @return
      * @throws Exception
      */
@@ -60,6 +57,9 @@ public class ClinicalNoteService {
 
         UserPrincipal userDetails = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
+        if (clinicalNoteRepository.findByEncounterId(clinicalNote.getEncounterId()) != null) {
+            throw new ClinicalnoteException(ErrorMsgEnum.OTHER_PERSON.getMessage());
+        }
         clinicalNote.setCreateBy(userDetails.getUsername());
         clinicalNote.setCreateDate(new Date());
         clinicalNoteRepository.save(clinicalNote);
@@ -70,7 +70,7 @@ public class ClinicalNoteService {
     /**
      * save clinical note cancel
      *
-     * @param clinicalNote
+     * @param clinicalNote model
      * @throws Exception
      */
     public void saveClinicalNoteCancel(ClinicalNote clinicalNote) throws Exception {
@@ -84,7 +84,7 @@ public class ClinicalNoteService {
     /**
      * update clinical note
      *
-     * @param clinicalNoteDto
+     * @param clinicalNoteDto model
      * @return
      * @throws Exception
      */
@@ -104,7 +104,7 @@ public class ClinicalNoteService {
     /**
      * update clinical note cancel
      *
-     * @param clinicalNoteDto
+     * @param clinicalNoteDto model
      * @throws Exception
      */
     public void updateClinicalNoteCancel(ClinicalNoteDto clinicalNoteDto) throws Exception {

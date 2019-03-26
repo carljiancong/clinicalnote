@@ -93,7 +93,7 @@ public class ClinicalNoteController {
      * @throws Exception
      */
     @RequestMapping(path = "/saveClinicalNote", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-//    @Compensable(compensationMethod = "saveClinicalNoteCancel", timeout = 10)
+    @Compensable(compensationMethod = "saveClinicalNoteCancel", timeout = 10)
     @Transactional(rollbackFor = Exception.class)
     public CimsResponseWrapper<ClinicalNote> saveClinicalNote(@RequestBody ClinicalNote clinicalNote) throws Exception {
         clinicalNoteService.saveClinicalNote(clinicalNote);

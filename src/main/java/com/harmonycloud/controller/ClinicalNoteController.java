@@ -11,8 +11,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.apache.servicecomb.saga.omega.transaction.annotations.Compensable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +22,6 @@ import java.util.List;
 @Api(value = "Clinical Note")
 public class ClinicalNoteController {
 
-    private static final Logger logger = LoggerFactory.getLogger(ClinicalNoteController.class);
     @Autowired
     private ClinicalTemplateService clinicalTemplateService;
 

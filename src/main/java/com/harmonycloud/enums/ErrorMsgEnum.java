@@ -5,10 +5,7 @@ public enum ErrorMsgEnum {
 
     SERVICE_ERROR("Internal service error"),
     PARAMETER_ERROR("Parameter error"),
-    OTHER_PERSON("The clinical note has been updated by another user"),
-    QUERY_ERROR("query error"),
-    SAVE_ERROR("save error"),
-    UPDATE_ERROR("update error");
+    OTHER_PERSON("The clinical note has been updated by another user");
 
     private String message;
 

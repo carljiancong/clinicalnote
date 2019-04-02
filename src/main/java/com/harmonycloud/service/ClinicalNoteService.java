@@ -53,7 +53,7 @@ public class ClinicalNoteService {
      * @return
      * @throws Exception
      */
-    public boolean saveClinicalNote(ClinicalNote clinicalNote) throws Exception {
+    public void saveClinicalNote(ClinicalNote clinicalNote) throws Exception {
 
         UserPrincipal userDetails = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
@@ -64,7 +64,6 @@ public class ClinicalNoteService {
         clinicalNote.setCreateDate(new Date());
         clinicalNoteRepository.save(clinicalNote);
 
-        return true;
     }
 
     /**
@@ -73,11 +72,13 @@ public class ClinicalNoteService {
      * @param clinicalNote model
      * @throws Exception
      */
-    public void saveClinicalNoteCancel(ClinicalNote clinicalNote) throws Exception {
-        ClinicalNote oldClinicalNote = null;
-
-        oldClinicalNote = clinicalNoteRepository.findByEncounterId(clinicalNote.getEncounterId());
+    public ClinicalNote saveClinicalNoteCancel(ClinicalNote clinicalNote) throws Exception {
+        ClinicalNote oldClinicalNote = clinicalNoteRepository.findByEncounterId(clinicalNote.getEncounterId());
+        if (oldClinicalNote == null) {
+            return null;
+        }
         clinicalNoteRepository.delete(oldClinicalNote);
+        return oldClinicalNote;
 
     }
 

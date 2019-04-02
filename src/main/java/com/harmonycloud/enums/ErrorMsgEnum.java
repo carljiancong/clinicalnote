@@ -7,6 +7,7 @@ public enum ErrorMsgEnum {
     PARAMETER_ERROR("Parameter error"),
     OTHER_PERSON("The clinical note has been updated by another user");
 
+
     private String message;
 
     ErrorMsgEnum(String message) {

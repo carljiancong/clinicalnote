@@ -106,8 +106,9 @@ public class ClinicalNoteController {
      * @param clinicalNote model
      */
     @PostMapping(path = "/saveClinicalCancel")
-    public void saveClinicalNoteCancel(@RequestBody ClinicalNote clinicalNote) throws Exception {
+    public CimsResponseWrapper<String> saveClinicalNoteCancel(@RequestBody ClinicalNote clinicalNote) throws Exception {
         clinicalNoteService.saveClinicalNoteCancel(clinicalNote);
+        return new CimsResponseWrapper<>(true, null, "Save clinical note rollback success");
     }
 
     /**
@@ -131,7 +132,8 @@ public class ClinicalNoteController {
      * @param clinicalNoteDto
      */
     @PostMapping(path = "updateClinicalCancel")
-    public void updateClinicalNoteCancel(@RequestBody ClinicalNoteDto clinicalNoteDto) throws Exception {
+    public CimsResponseWrapper<String> updateClinicalNoteCancel(@RequestBody ClinicalNoteDto clinicalNoteDto) throws Exception {
         clinicalNoteService.updateClinicalNoteCancel(clinicalNoteDto);
+        return new CimsResponseWrapper<>(true, null, "Update clinical note rollback success");
     }
 }

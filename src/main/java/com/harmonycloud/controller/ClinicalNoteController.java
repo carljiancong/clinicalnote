@@ -88,8 +88,8 @@ public class ClinicalNoteController {
     /**
      * save clinicalNote
      *
-     * @param clinicalNote
-     * @return
+     * @param clinicalNote model
+     * @return CimsResponseWrapper
      * @throws Exception
      */
     @RequestMapping(path = "/saveClinicalNote", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
@@ -103,9 +103,10 @@ public class ClinicalNoteController {
     /**
      * save clinicalNote cancel
      *
-     * @param clinicalNote
+     * @param clinicalNote model
      */
-    public void saveClinicalNoteCancel(ClinicalNote clinicalNote) throws Exception{
+    @PostMapping(path = "/saveClinicalCancel")
+    public void saveClinicalNoteCancel(@RequestBody ClinicalNote clinicalNote) throws Exception {
         clinicalNoteService.saveClinicalNoteCancel(clinicalNote);
     }
 
@@ -121,7 +122,7 @@ public class ClinicalNoteController {
     @Transactional(rollbackFor = Exception.class)
     public CimsResponseWrapper<List> updateClinicalNote(@RequestBody ClinicalNoteDto clinicalNoteDto) throws Exception {
         clinicalNoteService.updateClinicalNote(clinicalNoteDto);
-        return new CimsResponseWrapper<>(true,null, null);
+        return new CimsResponseWrapper<>(true, null, null);
     }
 
     /**
@@ -129,7 +130,8 @@ public class ClinicalNoteController {
      *
      * @param clinicalNoteDto
      */
-    public void updateClinicalNoteCancel(ClinicalNoteDto clinicalNoteDto) throws Exception{
+    @PostMapping(path = "updateClinicalCancel")
+    public void updateClinicalNoteCancel(@RequestBody ClinicalNoteDto clinicalNoteDto) throws Exception {
         clinicalNoteService.updateClinicalNoteCancel(clinicalNoteDto);
     }
 }

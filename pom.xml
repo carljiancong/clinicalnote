@@ -18,12 +18,13 @@
     </properties>
 
     <packaging>war</packaging>
-    <!--<repositories>-->
-        <!--<repository>-->
-            <!--<id>thirdparty</id>-->
-            <!--<url>http://10.10.102.101:8081/nexus/content/repositories/thirdparty/</url>-->
-        <!--</repository>-->
-    <!--</repositories>-->
+    <repositories>
+       <repository>
+         <id>josdev-repo</id>
+         <name>josdev-repo</name>
+         <url>http://nexus.josdev.com/nexus/content/repositories/thirdparty/</url>
+       </repository>
+     </repositories>
 
     <dependencies>
         <dependency>
@@ -121,7 +122,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
-        <finalName>ROOT</finalName>
+        <finalName>clinicalnote</finalName>
     </build>
 
 </project>
